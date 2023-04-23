@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useQuery } from "react-query";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -9,16 +10,11 @@ import loginService from "./services/login";
 import NotiContext from "./NotiContext";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [oldblogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notiInfo, setNotiInfo] = useState({ message: null });
   const [noti, notiDispatch] = useContext(NotiContext);
-
-  useEffect(() => {
-    blogService.getAll().then((b) => setBlogs(b));
-  }, []);
 
   useEffect(() => {
     const loggedBlogUser = window.localStorage.getItem("loggedBlogUser");
@@ -29,6 +25,13 @@ const App = () => {
       blogService.setToken(u.token);
     }
   }, []);
+
+  const result = useQuery("blogs", blogService.getAll);
+  if (result.isLoading) {
+    return <div>loading data...</div>;
+  }
+  const blogs = result.data;
+  const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -114,11 +117,9 @@ const App = () => {
     }
   };
 
-  const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
-
   return (
     <div>
-      <Notification notiInfo={notiInfo} />
+      <Notification />
       {user && (
         <div>
           <h2>blogs</h2>
