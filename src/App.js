@@ -37,6 +37,30 @@ const App = () => {
     },
   });
 
+  const updateBlogMutation = useMutation(blogService.update, {
+    onSuccess: ({ title, author }) => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `liked blog ${title} by ${author}`;
+      notifyWith(msg);
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
+
+  const deleteBlogMutation = useMutation(blogService.deleteBlog, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `deletion success`;
+      notifyWith(msg);
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
+
   useEffect(() => {
     const loggedBlogUser = window.localStorage.getItem("loggedBlogUser");
 
@@ -106,18 +130,8 @@ const App = () => {
   };
 
   const deleteBlog = async (id) => {
-    try {
-      blogService.setToken(user.token);
-      await blogService.deleteBlog(id);
-
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-
-      const msg = `deletion success`;
-      notifyWith(msg);
-    } catch (exception) {
-      const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "ERROR");
-    }
+    blogService.setToken(user.token);
+    deleteBlogMutation.mutate(id);
   };
 
   return (
