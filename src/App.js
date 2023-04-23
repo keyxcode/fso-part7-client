@@ -1,5 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import {
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useNavigate,
+  useMatch,
+} from "react-router-dom";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -124,9 +132,12 @@ const App = () => {
   const blogs = blogResult.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
+  const Users = () => <div>Hello World</div>;
+
   return (
     <div>
       <Notification />
+
       {user && (
         <div>
           <h2>blogs</h2>
@@ -147,6 +158,11 @@ const App = () => {
           ))}
         </div>
       )}
+
+      <Routes>
+        <Route path="/users" element={<Users />} />
+      </Routes>
+
       {!user && (
         <LoginForm
           username={username}
