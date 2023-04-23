@@ -2,17 +2,9 @@ import { createContext, useReducer } from "react";
 
 const userReducer = (state, action) => {
   switch (action.type) {
-    case "LOGIN_SUCCESS":
-      return {
-        type: "success",
-        message: action.payload,
-      };
-    case "LOGIN_ERROR":
-      return {
-        type: "error",
-        message: action.payload,
-      };
-    case "LOGOUT":
+    case "SET":
+      return action.payload;
+    case "CLEAR":
       return null;
     default:
       return state;

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NotiContextProvider } from "./NotiContext";
-import { UserContextProvider } from "../UserContext";
+import { UserContextProvider } from "./UserContext";
 import App from "./App";
 
 const queryClient = new QueryClient();

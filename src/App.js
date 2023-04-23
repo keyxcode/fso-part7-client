@@ -8,13 +8,15 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import NotiContext from "./NotiContext";
+import UserContext from "./UserContext";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
   const [noti, notiDispatch] = useContext(NotiContext);
+  const [user, userDispatch] = useContext(UserContext);
   const queryClient = useQueryClient();
+  const blogResult = useQuery("blogs", blogService.getAll);
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -65,20 +67,10 @@ const App = () => {
 
     if (loggedBlogUser) {
       const u = JSON.parse(loggedBlogUser);
-      setUser(u);
+      userDispatch({ type: "SET", payload: u });
       blogService.setToken(u.token);
     }
   }, []);
-
-  const result = useQuery("blogs", blogService.getAll);
-  if (result.isLoading) {
-    return <div>loading data...</div>;
-  }
-  if (result.isError) {
-    return <div>Error: {result.error}</div>;
-  }
-  const blogs = result.data;
-  const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -89,7 +81,8 @@ const App = () => {
       const msg = `welcome ${loggedUser.name}`;
       notifyWith(msg);
 
-      setUser(loggedUser);
+      userDispatch({ type: "SET", payload: loggedUser });
+
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -101,9 +94,8 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setUser(null);
+    userDispatch({ type: "CLEAR" });
     window.localStorage.removeItem("loggedBlogUser");
-
     const msg = "logout success";
     notifyWith(msg);
   };
@@ -122,6 +114,15 @@ const App = () => {
     blogService.setToken(user.token);
     deleteBlogMutation.mutate(id);
   };
+
+  if (blogResult.isLoading) {
+    return <div>loading data...</div>;
+  }
+  if (blogResult.isError) {
+    return <div>Error: {blogResult.error}</div>;
+  }
+  const blogs = blogResult.data;
+  const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
   return (
     <div>
