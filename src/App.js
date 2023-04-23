@@ -27,6 +27,11 @@ const App = () => {
   const queryClient = useQueryClient();
   const blogResult = useQuery("blogs", blogService.getAll);
 
+  const usersResult = useQuery("users", usersService.getAll);
+  const users = usersResult.data;
+
+  const match = useMatch("users/:id");
+
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
 
@@ -134,16 +139,12 @@ const App = () => {
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
   const Users = () => {
-    const usersResult = useQuery("users", usersService.getAll);
-
     if (usersResult.isLoading) {
       return <div>loading users...</div>;
     }
     if (usersResult.isError) {
       return <div>Error: {usersResult.error}</div>;
     }
-    const users = usersResult.data;
-
     return (
       <table>
         <thead>
@@ -166,7 +167,25 @@ const App = () => {
     );
   };
 
-  const User = () => {};
+  const User = () => {
+    const matchedUser = match
+      ? users.find((u) => u.id === match.params.id)
+      : null;
+    console.log(matchedUser);
+
+    if (!matchedUser) return null;
+    return (
+      <div>
+        <h1>{matchedUser.name}</h1>
+        <h2>added blogs</h2>
+        <ul>
+          {matchedUser.blogs.map((b) => (
+            <li key={b.id}>{b.title}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
     <div>
