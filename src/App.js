@@ -10,7 +10,6 @@ import loginService from "./services/login";
 import NotiContext from "./NotiContext";
 
 const App = () => {
-  const [oldblogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -74,6 +73,9 @@ const App = () => {
   const result = useQuery("blogs", blogService.getAll);
   if (result.isLoading) {
     return <div>loading data...</div>;
+  }
+  if (result.isError) {
+    return <div>Error: {result.error}</div>;
   }
   const blogs = result.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
