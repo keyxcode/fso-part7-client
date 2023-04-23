@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -15,6 +15,27 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [noti, notiDispatch] = useContext(NotiContext);
+  const queryClient = useQueryClient();
+
+  const notifyWith = (message, type = "SUCCESS") => {
+    notiDispatch({ type, payload: message });
+
+    setTimeout(() => {
+      notiDispatch({ type: "CLEAR" });
+    }, 3000);
+  };
+
+  const createBlogMutation = useMutation(blogService.create, {
+    onSuccess: ({ title, author }) => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `a new blog ${title} by ${author} added`;
+      notifyWith(msg);
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
 
   useEffect(() => {
     const loggedBlogUser = window.localStorage.getItem("loggedBlogUser");
@@ -32,14 +53,6 @@ const App = () => {
   }
   const blogs = result.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
-
-  const notifyWith = (message, type = "SUCCESS") => {
-    notiDispatch({ type, payload: message });
-
-    setTimeout(() => {
-      notiDispatch({ type: "CLEAR" });
-    }, 3000);
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -70,18 +83,8 @@ const App = () => {
   };
 
   const createBlog = async ({ title, author, url }) => {
-    try {
-      blogService.setToken(user.token);
-      const newBlog = await blogService.create({ title, author, url });
-
-      const msg = `a new blog ${title} by ${author} added`;
-      notifyWith(msg);
-
-      setBlogs(blogs.concat(newBlog));
-    } catch (exception) {
-      const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "ERROR");
-    }
+    blogService.setToken(user.token);
+    createBlogMutation.mutate({ title, author, url });
   };
 
   const likeBlog = async (id, updatedBlog) => {
