@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -6,6 +6,7 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import NotiContext from "./NotiContext";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +14,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [notiInfo, setNotiInfo] = useState({ message: null });
+  const [noti, notiDispatch] = useContext(NotiContext);
 
   useEffect(() => {
     blogService.getAll().then((b) => setBlogs(b));
@@ -28,14 +30,11 @@ const App = () => {
     }
   }, []);
 
-  const notifyWith = (message, type = "info") => {
-    setNotiInfo({
-      message,
-      type,
-    });
+  const notifyWith = (message, type = "SUCCESS") => {
+    notiDispatch({ type, payload: message });
 
     setTimeout(() => {
-      setNotiInfo({ message: null });
+      notiDispatch({ type: "CLEAR" });
     }, 3000);
   };
 
@@ -55,7 +54,7 @@ const App = () => {
       console.log(exception);
 
       const msg = "wrong user name or password";
-      notifyWith(msg, "error");
+      notifyWith(msg, "ERROR");
     }
   };
 
@@ -78,7 +77,7 @@ const App = () => {
       setBlogs(blogs.concat(newBlog));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      notifyWith(msg, "ERROR");
     }
   };
 
@@ -96,7 +95,7 @@ const App = () => {
       notifyWith(msg);
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      notifyWith(msg, "ERROR");
     }
   };
 
@@ -111,7 +110,7 @@ const App = () => {
       notifyWith(msg);
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      notifyWith(msg, "ERROR");
     }
   };
 

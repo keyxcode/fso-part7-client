@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import NotiContext from "../NotiContext";
 
-const Notification = ({ notiInfo }) => {
-  const { message, type } = notiInfo;
-  const [noti, dispatch] = useContext(NotiContext);
+const Notification = () => {
+  const [noti, notiDispatch] = useContext(NotiContext);
+  if (noti === null) return null;
+
+  const { message, type } = noti;
 
   const notiStyle = {
     color: "green",
@@ -20,9 +22,7 @@ const Notification = ({ notiInfo }) => {
     border: "5px solid red",
   };
 
-  // if (message === null) return null;
-
-  return <div style={type === "error" ? errorStyle : notiStyle}>{noti}</div>;
+  return <div style={type === "error" ? errorStyle : notiStyle}>{message}</div>;
 };
 
 export default Notification;

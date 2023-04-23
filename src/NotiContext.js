@@ -2,9 +2,17 @@ import { createContext, useReducer } from "react";
 
 const notiReducer = (state, action) => {
   switch (action.type) {
-    case "SET_NOTI":
-      return action.payload;
-    case "CLEAR_NOTI":
+    case "SUCCESS":
+      return {
+        type: "success",
+        message: action.payload,
+      };
+    case "ERROR":
+      return {
+        type: "error",
+        message: action.payload,
+      };
+    case "CLEAR":
       return null;
     default:
       return state;
@@ -14,7 +22,7 @@ const notiReducer = (state, action) => {
 const NotiContext = createContext();
 
 export const NotiContextProvider = (props) => {
-  const [noti, notiDispatch] = useReducer(notiReducer, "hellow world");
+  const [noti, notiDispatch] = useReducer(notiReducer, null);
 
   return (
     <NotiContext.Provider value={[noti, notiDispatch]}>
