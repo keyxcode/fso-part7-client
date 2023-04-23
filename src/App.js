@@ -111,9 +111,9 @@ const App = () => {
     createBlogMutation.mutate(newBlog);
   };
 
-  const likeBlog = async (id, updatedBlog) => {
+  const likeBlog = async (updatedBlog) => {
     blogService.setToken(user.token);
-    updateBlogMutation.mutate(id, updatedBlog);
+    updateBlogMutation.mutate(updatedBlog);
   };
 
   const deleteBlog = async (id) => {

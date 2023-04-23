@@ -21,12 +21,10 @@ const Blog = ({ blog, likeBlog, deleteBlog, currentUsername }) => {
 
   const handleClickLike = () => {
     const updatedBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
+      ...blog,
       likes: blog.likes + 1,
     };
-    likeBlog(blog.id, updatedBlog);
+    likeBlog(updatedBlog);
   };
 
   const handleClickDelete = () => {
