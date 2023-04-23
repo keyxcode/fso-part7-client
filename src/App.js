@@ -15,6 +15,7 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import usersService from "./services/users";
 import NotiContext from "./NotiContext";
 import UserContext from "./UserContext";
 
@@ -132,7 +133,36 @@ const App = () => {
   const blogs = blogResult.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
-  const Users = () => <div>Hello World</div>;
+  const Users = () => {
+    const usersResult = useQuery("users", usersService.getAll);
+
+    if (usersResult.isLoading) {
+      return <div>loading users...</div>;
+    }
+    if (usersResult.isError) {
+      return <div>Error: {usersResult.error}</div>;
+    }
+    const users = usersResult.data;
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>blogs created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((u) => (
+            <tr key={u.id}>
+              <td>{u.name}</td>
+              <td>{u.blogs.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   return (
     <div>
@@ -144,34 +174,41 @@ const App = () => {
           <div>
             {user.name} logged in<button onClick={handleLogout}>logout</button>
           </div>
-          <Togglable buttonLabel="create new blog">
-            <BlogForm createBlog={createBlog} />
-          </Togglable>
-          {sortedBlogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              likeBlog={likeBlog}
-              deleteBlog={deleteBlog}
-              currentUsername={user.username}
-            />
-          ))}
         </div>
       )}
 
       <Routes>
+        <Route
+          path="/"
+          element={
+            user ? (
+              <div>
+                <Togglable buttonLabel="create new blog">
+                  <BlogForm createBlog={createBlog} />
+                </Togglable>
+                {sortedBlogs.map((blog) => (
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    likeBlog={likeBlog}
+                    deleteBlog={deleteBlog}
+                    currentUsername={user.username}
+                  />
+                ))}
+              </div>
+            ) : (
+              <LoginForm
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                handleLogin={handleLogin}
+              />
+            )
+          }
+        />
         <Route path="/users" element={<Users />} />
       </Routes>
-
-      {!user && (
-        <LoginForm
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
-      )}
     </div>
   );
 };
