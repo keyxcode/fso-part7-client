@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { TextInput, Button, Group, Paper } from "@mantine/core";
 
 const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
   const [comment, setComment] = useState("");
@@ -31,7 +32,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
         <a href={blog.url}>{blog.url}</a>
       </div>
       <div>
-        likes {blog.likes} <button onClick={handleClickLike}>like</button>{" "}
+        likes {blog.likes} <Button onClick={handleClickLike}>like</Button>{" "}
       </div>
       <div>added by {blog.user.username}</div>
       <div>
@@ -41,17 +42,20 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
       </div>
       <h2>comments</h2>
       <form onSubmit={handleSubmitComment}>
-        <input
+        <TextInput
           value={comment}
           onChange={(event) => setComment(event.target.value)}
         />
-        <button type="submit">add comment</button>
+        <Button type="submit">add comment</Button>
       </form>
-      <ul>
-        {blog.comments.map((c) => (
-          <li key={c.id}>{c.content}</li>
+      {blog.comments
+        .slice()
+        .reverse()
+        .map((c) => (
+          <Paper key={c.id} shadow="xs" p="md" withBorder>
+            {c.content}
+          </Paper>
         ))}
-      </ul>
     </div>
   );
 };
