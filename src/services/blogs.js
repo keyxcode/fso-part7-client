@@ -42,5 +42,18 @@ const deleteBlog = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, config);
 };
 
+const commentBlog = async (id, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(
+    `${baseUrl}/${id}/comments`,
+    newObject,
+    config
+  );
+
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update, deleteBlog, setToken };
+export default { getAll, create, update, deleteBlog, commentBlog, setToken };

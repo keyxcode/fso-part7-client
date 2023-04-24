@@ -1,6 +1,9 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, likeBlog, deleteBlog, currentUsername }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
+  const [comment, setComment] = useState("");
+
   const handleClickLike = () => {
     const updatedBlog = {
       ...blog,
@@ -13,6 +16,12 @@ const Blog = ({ blog, likeBlog, deleteBlog, currentUsername }) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       deleteBlog(blog.id);
     }
+  };
+
+  const handleSubmitComment = (event) => {
+    event.preventDefault();
+    commentBlog(blog.id, comment);
+    setComment("");
   };
 
   return (
@@ -31,9 +40,16 @@ const Blog = ({ blog, likeBlog, deleteBlog, currentUsername }) => {
         )}
       </div>
       <h2>comments</h2>
+      <form onSubmit={handleSubmitComment}>
+        <input
+          value={comment}
+          onChange={(event) => setComment(event.target.value)}
+        />
+        <button type="submit">add comment</button>
+      </form>
       <ul>
-        {blog.comments.map((comment) => (
-          <li key={comment.id}>{comment.content}</li>
+        {blog.comments.map((c) => (
+          <li key={c.id}>{c.content}</li>
         ))}
       </ul>
     </div>

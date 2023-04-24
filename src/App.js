@@ -81,6 +81,17 @@ const App = () => {
     },
   });
 
+  const commentBlogMutation = useMutation(blogService.commentBlog, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("blogs");
+      notifyWith("comment posted");
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
+
   useEffect(() => {
     const loggedBlogUser = window.localStorage.getItem("loggedBlogUser");
 
@@ -132,6 +143,11 @@ const App = () => {
   const deleteBlog = async (id) => {
     blogService.setToken(user.token);
     deleteBlogMutation.mutate(id);
+  };
+
+  const commentBlog = async (id, comment) => {
+    blogService.setToken(user.token);
+    commentBlogMutation.mutate(id, { content: comment });
   };
 
   if (blogResult.isLoading) {
@@ -198,6 +214,7 @@ const App = () => {
               blog={matchedBlog}
               likeBlog={likeBlog}
               deleteBlog={deleteBlog}
+              commentBlog={commentBlog}
               currentUsername={user.name}
             />
           }
