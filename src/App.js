@@ -19,6 +19,7 @@ import usersService from "./services/users";
 import NotiContext from "./NotiContext";
 import UserContext from "./UserContext";
 import UserRoute from "./routes/User";
+import UsersRoute from "./routes/Users";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -143,35 +144,6 @@ const App = () => {
   const blogs = blogResult.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
 
-  const Users = () => {
-    if (usersResult.isLoading) {
-      return <div>loading users...</div>;
-    }
-    if (usersResult.isError) {
-      return <div>Error: {usersResult.error}</div>;
-    }
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id}>
-              <td>
-                <Link to={`/users/${u.id}`}>{u.name}</Link>
-              </td>
-              <td>{u.blogs.length}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
   return (
     <div>
       <Notification />
@@ -215,7 +187,10 @@ const App = () => {
             )
           }
         />
-        <Route path="/users" element={<Users />} />
+        <Route
+          path="/users"
+          element={<UsersRoute users={users} usersResult={usersResult} />}
+        />
         <Route path="/users/:id" element={<UserRoute user={matchedUser} />} />
       </Routes>
     </div>
