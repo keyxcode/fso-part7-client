@@ -151,6 +151,21 @@ const App = () => {
     ? blogs.find((b) => b.id === matchBlog.params.id)
     : null;
 
+  if (!user) {
+    return (
+      <div>
+        <Notification />
+        <LoginForm
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Notification />
@@ -161,24 +176,14 @@ const App = () => {
         <Route
           path="/"
           element={
-            user ? (
-              <div>
-                <Togglable buttonLabel="create new">
-                  <BlogForm createBlog={createBlog} />
-                </Togglable>
-                {sortedBlogs.map((blog) => (
-                  <Blog key={blog.id} blog={blog} />
-                ))}
-              </div>
-            ) : (
-              <LoginForm
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                handleLogin={handleLogin}
-              />
-            )
+            <div>
+              <Togglable buttonLabel="create new">
+                <BlogForm createBlog={createBlog} />
+              </Togglable>
+              {sortedBlogs.map((blog) => (
+                <Blog key={blog.id} blog={blog} />
+              ))}
+            </div>
           }
         />
         <Route
@@ -193,7 +198,7 @@ const App = () => {
               blog={matchedBlog}
               likeBlog={likeBlog}
               deleteBlog={deleteBlog}
-              currentUsername={user.username}
+              currentUsername={user.name}
             />
           }
         />
