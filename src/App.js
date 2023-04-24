@@ -157,8 +157,9 @@ const App = () => {
       {user && (
         <div>
           <h2>blogs</h2>
+          <div>{user.name} logged in</div>
           <div>
-            {user.name} logged in<button onClick={handleLogout}>logout</button>
+            <button onClick={handleLogout}>logout</button>
           </div>
         </div>
       )}
@@ -169,7 +170,7 @@ const App = () => {
           element={
             user ? (
               <div>
-                <Togglable buttonLabel="create new blog">
+                <Togglable buttonLabel="create new">
                   <BlogForm createBlog={createBlog} />
                 </Togglable>
                 {sortedBlogs.map((blog) => (
