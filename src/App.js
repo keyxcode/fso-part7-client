@@ -13,6 +13,7 @@ import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import Navigation from "./components/Navigation";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import usersService from "./services/users";
@@ -153,16 +154,8 @@ const App = () => {
   return (
     <div>
       <Notification />
-
-      {user && (
-        <div>
-          <h2>blogs</h2>
-          <div>{user.name} logged in</div>
-          <div>
-            <button onClick={handleLogout}>logout</button>
-          </div>
-        </div>
-      )}
+      <Navigation user={user} handleLogout={handleLogout} />
+      <h1>blog app</h1>
 
       <Routes>
         <Route
