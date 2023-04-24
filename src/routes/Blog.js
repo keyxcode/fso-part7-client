@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Button, Group, Paper } from "@mantine/core";
+import { TextInput, Button, Paper, Anchor } from "@mantine/core";
 
 const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
   const [comment, setComment] = useState("");
@@ -29,7 +29,9 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
     <div>
       <h1>{blog.title}</h1>
       <div>
-        <a href={blog.url}>{blog.url}</a>
+        <Anchor component="a" href={blog.url}>
+          {blog.url}
+        </Anchor>
       </div>
       <div>
         likes {blog.likes} <Button onClick={handleClickLike}>like</Button>{" "}
