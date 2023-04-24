@@ -20,22 +20,20 @@ import NotiContext from "./NotiContext";
 import UserContext from "./UserContext";
 import UserRoute from "./routes/User";
 import UsersRoute from "./routes/Users";
+import BlogRoute from "./routes/Blog";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const [noti, notiDispatch] = useContext(NotiContext);
   const [user, userDispatch] = useContext(UserContext);
+
   const queryClient = useQueryClient();
   const blogResult = useQuery("blogs", blogService.getAll);
-
   const usersResult = useQuery("users", usersService.getAll);
-  const users = usersResult.data;
 
   const matchUser = useMatch("users/:id");
-  const matchedUser = matchUser
-    ? users.find((u) => u.id === matchUser.params.id)
-    : null;
   const matchBlog = useMatch("blogs/:id");
 
   const notifyWith = (message, type = "SUCCESS") => {
@@ -143,6 +141,14 @@ const App = () => {
   }
   const blogs = blogResult.data;
   const sortedBlogs = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes);
+  const users = usersResult.data;
+
+  const matchedUser = matchUser
+    ? users.find((u) => u.id === matchUser.params.id)
+    : null;
+  const matchedBlog = matchBlog
+    ? blogs.find((b) => b.id === matchBlog.params.id)
+    : null;
 
   return (
     <div>
@@ -192,6 +198,7 @@ const App = () => {
           element={<UsersRoute users={users} usersResult={usersResult} />}
         />
         <Route path="/users/:id" element={<UserRoute user={matchedUser} />} />
+        <Route path="/blogs/:id" element={<BlogRoute blog={matchedBlog} />} />
       </Routes>
     </div>
   );
