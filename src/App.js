@@ -173,13 +173,7 @@ const App = () => {
                   <BlogForm createBlog={createBlog} />
                 </Togglable>
                 {sortedBlogs.map((blog) => (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    likeBlog={likeBlog}
-                    deleteBlog={deleteBlog}
-                    currentUsername={user.username}
-                  />
+                  <Blog key={blog.id} blog={blog} />
                 ))}
               </div>
             ) : (
@@ -198,7 +192,17 @@ const App = () => {
           element={<UsersRoute users={users} usersResult={usersResult} />}
         />
         <Route path="/users/:id" element={<UserRoute user={matchedUser} />} />
-        <Route path="/blogs/:id" element={<BlogRoute blog={matchedBlog} />} />
+        <Route
+          path="/blogs/:id"
+          element={
+            <BlogRoute
+              blog={matchedBlog}
+              likeBlog={likeBlog}
+              deleteBlog={deleteBlog}
+              currentUsername={user.username}
+            />
+          }
+        />
       </Routes>
     </div>
   );
