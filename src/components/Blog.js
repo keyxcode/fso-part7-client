@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Paper, Text } from "@mantine/core";
 
 const Blog = ({ blog }) => {
   const blogStyle = {
@@ -12,13 +13,17 @@ const Blog = ({ blog }) => {
   };
 
   return (
-    <div className="blog" style={blogStyle}>
-      <div>
-        <Link to={`blogs/${blog.id}`}>
-          {blog.title} {blog.author}
-        </Link>
-      </div>
-    </div>
+    <Paper
+      shadow="xs"
+      p="md"
+      component={Link}
+      to={`blogs/${blog.id}`}
+      withBorder
+    >
+      <Text>
+        {blog.title} {blog.author}
+      </Text>
+    </Paper>
   );
 };
 
