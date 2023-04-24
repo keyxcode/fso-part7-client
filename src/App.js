@@ -18,6 +18,7 @@ import loginService from "./services/login";
 import usersService from "./services/users";
 import NotiContext from "./NotiContext";
 import UserContext from "./UserContext";
+import UserRoute from "./routes/User";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -30,7 +31,11 @@ const App = () => {
   const usersResult = useQuery("users", usersService.getAll);
   const users = usersResult.data;
 
-  const match = useMatch("users/:id");
+  const matchUser = useMatch("users/:id");
+  const matchedUser = matchUser
+    ? users.find((u) => u.id === matchUser.params.id)
+    : null;
+  const matchBlog = useMatch("blogs/:id");
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -167,26 +172,6 @@ const App = () => {
     );
   };
 
-  const User = () => {
-    const matchedUser = match
-      ? users.find((u) => u.id === match.params.id)
-      : null;
-    console.log(matchedUser);
-
-    if (!matchedUser) return null;
-    return (
-      <div>
-        <h1>{matchedUser.name}</h1>
-        <h2>added blogs</h2>
-        <ul>
-          {matchedUser.blogs.map((b) => (
-            <li key={b.id}>{b.title}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
   return (
     <div>
       <Notification />
@@ -231,7 +216,7 @@ const App = () => {
           }
         />
         <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<User />} />
+        <Route path="/users/:id" element={<UserRoute user={matchedUser} />} />
       </Routes>
     </div>
   );
