@@ -42,14 +42,14 @@ const deleteBlog = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, config);
 };
 
-const commentBlog = async (id, newObject) => {
-  const config = {
-    headers: { Authorization: token },
-  };
+const commentBlog = async ({ id, commentObject }) => {
+  // const config = {
+  //   headers: { Authorization: token },
+  // };
   const response = await axios.post(
     `${baseUrl}/${id}/comments`,
-    newObject,
-    config
+    commentObject
+    // config
   );
 
   return response.data;

@@ -147,7 +147,7 @@ const App = () => {
 
   const commentBlog = async (id, comment) => {
     blogService.setToken(user.token);
-    commentBlogMutation.mutate(id, { content: comment });
+    commentBlogMutation.mutate({ id, commentObject: { content: comment } });
   };
 
   if (blogResult.isLoading) {
