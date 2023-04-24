@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Header, Group, rem } from "@mantine/core";
+import { Header, Group, rem, Button } from "@mantine/core";
 
 const HEADER_HEIGHT = rem(60);
 
@@ -8,8 +8,8 @@ const Navigation = ({ user, handleLogout }) => (
     <Group spacing={20}>
       <Link to={"/"}>blogs</Link>
       <Link to={"/users"}>users</Link>
-      {user && `${user.name} logged in`}
-      {user && <button onClick={handleLogout}>logout</button>}
+      {user.name} logged in
+      <Button onClick={handleLogout}>logout</Button>
     </Group>
   </Header>
 );

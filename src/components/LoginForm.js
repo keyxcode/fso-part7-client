@@ -1,3 +1,5 @@
+import { TextInput, Button, Group } from "@mantine/core";
+
 const LoginForm = ({
   username,
   setUsername,
@@ -7,29 +9,29 @@ const LoginForm = ({
 }) => (
   <form onSubmit={handleLogin}>
     <h1>log in to application</h1>
-    <div>
+    <Group>
       username
-      <input
+      <TextInput
         id="username"
         type="text"
         value={username}
         name="Username"
         onChange={({ target }) => setUsername(target.value)}
       />
-    </div>
-    <div>
+    </Group>
+    <Group>
       password
-      <input
+      <TextInput
         id="password"
         type="password"
         value={password}
         name="Password"
         onChange={({ target }) => setPassword(target.value)}
       />
-    </div>
-    <button id="login-button" type="submit">
+    </Group>
+    <Button id="login-button" type="submit">
       login
-    </button>
+    </Button>
   </form>
 );
 

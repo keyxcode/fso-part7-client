@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { TextInput, Button, Group } from "@mantine/core";
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState("");
@@ -18,40 +19,39 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>create new</h2>
-      <div>
-        title
-        <input
+      <Group>
+        <TextInput
           id="title"
+          label="title"
           placeholder="blog name"
           type="text"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
-      </div>
-      <div>
-        author
-        <input
+      </Group>
+      <Group>
+        <TextInput
           id="author"
+          label="author"
           placeholder="author name"
           type="text"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
-      </div>
-      <div>
-        url
-        <input
+      </Group>
+      <Group>
+        <TextInput
           id="url"
+          label="url"
           placeholder="www.something.com"
           type="text"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
-      </div>
-      <button id="create-blog" type="submit">
+      </Group>
+      <Button id="create-blog" color="green" type="submit">
         create
-      </button>
+      </Button>
     </form>
   );
 };

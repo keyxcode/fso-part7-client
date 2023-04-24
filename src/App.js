@@ -8,7 +8,7 @@ import {
   useNavigate,
   useMatch,
 } from "react-router-dom";
-import { MantineProvider, Text } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -185,8 +185,8 @@ const App = () => {
 
   return (
     <MantineProvider withGlobalStyles>
-      <Notification />
       <Navigation user={user} handleLogout={handleLogout} />
+      <Notification />
       <h1>blog app</h1>
 
       <Routes>
