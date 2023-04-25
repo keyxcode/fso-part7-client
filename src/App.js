@@ -130,21 +130,6 @@ const App = () => {
     notifyWith(msg);
   };
 
-  const likeBlog = async (updatedBlog) => {
-    blogService.setToken(user.token);
-    updateBlogMutation.mutate(updatedBlog);
-  };
-
-  const deleteBlog = async (id) => {
-    blogService.setToken(user.token);
-    deleteBlogMutation.mutate(id);
-  };
-
-  const commentBlog = async (id, comment) => {
-    blogService.setToken(user.token);
-    commentBlogMutation.mutate({ id, commentObject: { content: comment } });
-  };
-
   if (blogResult.isLoading) {
     return <div>loading data...</div>;
   }
@@ -217,10 +202,9 @@ const App = () => {
               element={
                 <BlogRoute
                   blog={matchedBlog}
-                  likeBlog={likeBlog}
-                  deleteBlog={deleteBlog}
-                  commentBlog={commentBlog}
-                  currentUsername={user.name}
+                  updateBlogMutation={updateBlogMutation}
+                  deleteBlogMutation={deleteBlogMutation}
+                  commentBlogMutation={commentBlogMutation}
                 />
               }
             />

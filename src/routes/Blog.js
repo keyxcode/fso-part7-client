@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { TextInput, Button, Paper, Anchor, Stack } from "@mantine/core";
+import blogService from "../services/blogs";
+import UserContext from "../UserContext";
 
-const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
+const Blog = ({
+  blog,
+  updateBlogMutation,
+  deleteBlogMutation,
+  commentBlogMutation,
+}) => {
   const [comment, setComment] = useState("");
+  const [user, userDispatch] = useContext(UserContext);
+
+  const likeBlog = async (updatedBlog) => {
+    blogService.setToken(user.token);
+    updateBlogMutation.mutate(updatedBlog);
+  };
+
+  const deleteBlog = async (id) => {
+    blogService.setToken(user.token);
+    deleteBlogMutation.mutate(id);
+  };
+
+  const commentBlog = async (id, content) => {
+    blogService.setToken(user.token);
+    commentBlogMutation.mutate({ id, commentObject: { content } });
+  };
 
   const handleClickLike = () => {
     const updatedBlog = {
@@ -33,13 +56,16 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
           {blog.url}
         </Anchor>
       </div>
+      <div>likes {blog.likes}</div>
       <div>
-        likes {blog.likes} <Button onClick={handleClickLike}>like</Button>{" "}
+        <Button onClick={handleClickLike}>like</Button>
       </div>
       <div>added by {blog.user.username}</div>
       <div>
-        {blog.user.username === currentUsername && (
-          <button onClick={handleClickDelete}>delete</button>
+        {blog.user.username === user.username && (
+          <Button onClick={handleClickDelete} color="red">
+            delete
+          </Button>
         )}
       </div>
       <h2>comments</h2>
@@ -62,12 +88,6 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
       </Stack>
     </div>
   );
-};
-
-Blog.propTypes = {
-  likeBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  currentUsername: PropTypes.string.isRequired,
 };
 
 export default Blog;
