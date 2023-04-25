@@ -1,14 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  Routes,
-  Route,
-  Link,
-  Navigate,
-  useNavigate,
-  useMatch,
-} from "react-router-dom";
-import { MantineProvider } from "@mantine/core";
+import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
+import { MantineProvider, AppShell, Container } from "@mantine/core";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -37,6 +30,7 @@ const App = () => {
 
   const matchUser = useMatch("users/:id");
   const matchBlog = useMatch("blogs/:id");
+  const navigate = useNavigate();
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -112,6 +106,7 @@ const App = () => {
       const msg = `welcome ${loggedUser.name}`;
       notifyWith(msg);
 
+      navigate("/");
       userDispatch({ type: "SET", payload: loggedUser });
 
       setUsername("");
@@ -170,57 +165,65 @@ const App = () => {
 
   if (!user) {
     return (
-      <div>
-        <Notification />
-        <LoginForm
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
-      </div>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Container>
+          <Notification />
+          <LoginForm
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          />
+        </Container>
+      </MantineProvider>
     );
   }
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Navigation user={user} handleLogout={handleLogout} />
-      <Notification />
-      <h1>blog app</h1>
+      <AppShell header={<Navigation user={user} handleLogout={handleLogout} />}>
+        <Container>
+          <Notification />
+          <h1>blog app</h1>
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <Togglable buttonLabel="create new">
-                <BlogForm createBlog={createBlog} />
-              </Togglable>
-              {sortedBlogs.map((blog) => (
-                <Blog key={blog.id} blog={blog} />
-              ))}
-            </div>
-          }
-        />
-        <Route
-          path="/users"
-          element={<UsersRoute users={users} usersResult={usersResult} />}
-        />
-        <Route path="/users/:id" element={<UserRoute user={matchedUser} />} />
-        <Route
-          path="/blogs/:id"
-          element={
-            <BlogRoute
-              blog={matchedBlog}
-              likeBlog={likeBlog}
-              deleteBlog={deleteBlog}
-              commentBlog={commentBlog}
-              currentUsername={user.name}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div>
+                  <Togglable buttonLabel="create new">
+                    <BlogForm createBlog={createBlog} />
+                  </Togglable>
+                  {sortedBlogs.map((blog) => (
+                    <Blog key={blog.id} blog={blog} />
+                  ))}
+                </div>
+              }
             />
-          }
-        />
-      </Routes>
+            <Route
+              path="/users"
+              element={<UsersRoute users={users} usersResult={usersResult} />}
+            />
+            <Route
+              path="/users/:id"
+              element={<UserRoute user={matchedUser} />}
+            />
+            <Route
+              path="/blogs/:id"
+              element={
+                <BlogRoute
+                  blog={matchedBlog}
+                  likeBlog={likeBlog}
+                  deleteBlog={deleteBlog}
+                  commentBlog={commentBlog}
+                  currentUsername={user.name}
+                />
+              }
+            />
+          </Routes>
+        </Container>
+      </AppShell>
     </MantineProvider>
   );
 };

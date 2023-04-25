@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import { Paper, Text } from "@mantine/core";
 
 const Blog = ({ blog }) => (
-  <Paper component={Link} to={`blogs/${blog.id}`} shadow="xs" p="md" withBorder>
+  <Paper
+    component={Link}
+    to={`blogs/${blog.id}`}
+    shadow="xs"
+    p="md"
+    my="md"
+    withBorder
+  >
     <Text>
       {blog.title} {blog.author}
     </Text>

@@ -54,7 +54,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
         .slice()
         .reverse()
         .map((c) => (
-          <Paper key={c.id} shadow="xs" p="md" withBorder>
+          <Paper key={c.id} shadow="xs" p="md" my="md" withBorder>
             {c.content}
           </Paper>
         ))}

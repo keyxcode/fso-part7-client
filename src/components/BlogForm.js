@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Button, Group } from "@mantine/core";
+import { TextInput, Button } from "@mantine/core";
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState("");
@@ -19,36 +19,33 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Group>
-        <TextInput
-          id="title"
-          label="title"
-          placeholder="blog name"
-          type="text"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </Group>
-      <Group>
-        <TextInput
-          id="author"
-          label="author"
-          placeholder="author name"
-          type="text"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </Group>
-      <Group>
-        <TextInput
-          id="url"
-          label="url"
-          placeholder="www.something.com"
-          type="text"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </Group>
+      <TextInput
+        id="title"
+        label="title"
+        placeholder="blog name"
+        type="text"
+        value={title}
+        onChange={({ target }) => setTitle(target.value)}
+      />
+
+      <TextInput
+        id="author"
+        label="author"
+        placeholder="author name"
+        type="text"
+        value={author}
+        onChange={({ target }) => setAuthor(target.value)}
+      />
+
+      <TextInput
+        id="url"
+        label="url"
+        placeholder="www.something.com"
+        type="text"
+        value={url}
+        onChange={({ target }) => setUrl(target.value)}
+      />
+
       <Button id="create-blog" color="green" type="submit">
         create
       </Button>
