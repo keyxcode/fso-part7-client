@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Notification as MantineNotif } from "@mantine/core";
+import { Alert } from "@mantine/core";
 import NotiContext from "../NotiContext";
 
 const Notification = () => {
@@ -8,11 +8,7 @@ const Notification = () => {
 
   const { message, type } = noti;
 
-  return (
-    <MantineNotif color={type === "error" ? "red" : "teal"}>
-      {message}
-    </MantineNotif>
-  );
+  return <Alert color={type === "error" ? "red" : "teal"}>{message}</Alert>;
 };
 
 export default Notification;

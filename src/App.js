@@ -184,7 +184,7 @@ const App = () => {
   }
 
   return (
-    <MantineProvider withGlobalStyles>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
       <Navigation user={user} handleLogout={handleLogout} />
       <Notification />
       <h1>blog app</h1>
