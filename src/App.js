@@ -90,13 +90,6 @@ const App = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    userDispatch({ type: "CLEAR" });
-    window.localStorage.removeItem("loggedBlogUser");
-    const msg = "logout success";
-    notifyWith(msg);
-  };
-
   if (blogResult.isLoading) {
     return <div>loading data...</div>;
   }
@@ -127,7 +120,7 @@ const App = () => {
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <AppShell header={<Navigation user={user} handleLogout={handleLogout} />}>
+      <AppShell header={<Navigation notifyWith={notifyWith} />}>
         <Container>
           <Notification />
           <Text
