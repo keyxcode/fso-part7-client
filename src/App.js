@@ -1,12 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
-import { MantineProvider, AppShell, Container } from "@mantine/core";
-import Blog from "./components/Blog";
+import {
+  MantineProvider,
+  AppShell,
+  Container,
+  Stack,
+  Text,
+} from "@mantine/core";
 import LoginForm from "./components/LoginForm";
-import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
 import Navigation from "./components/Navigation";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -16,6 +19,7 @@ import UserContext from "./UserContext";
 import UserRoute from "./routes/User";
 import UsersRoute from "./routes/Users";
 import BlogRoute from "./routes/Blog";
+import HomeRoute from "./routes/Home";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -126,11 +130,6 @@ const App = () => {
     notifyWith(msg);
   };
 
-  const createBlog = async (newBlog) => {
-    blogService.setToken(user.token);
-    createBlogMutation.mutate(newBlog);
-  };
-
   const likeBlog = async (updatedBlog) => {
     blogService.setToken(user.token);
     updateBlogMutation.mutate(updatedBlog);
@@ -185,20 +184,24 @@ const App = () => {
       <AppShell header={<Navigation user={user} handleLogout={handleLogout} />}>
         <Container>
           <Notification />
-          <h1>blog app</h1>
+          <Text
+            variant="gradient"
+            gradient={{ from: "indigo", to: "cyan", deg: 45 }}
+            ta="center"
+            fz={50}
+            fw={700}
+          >
+            blog app
+          </Text>
 
           <Routes>
             <Route
               path="/"
               element={
-                <div>
-                  <Togglable buttonLabel="create new">
-                    <BlogForm createBlog={createBlog} />
-                  </Togglable>
-                  {sortedBlogs.map((blog) => (
-                    <Blog key={blog.id} blog={blog} />
-                  ))}
-                </div>
+                <HomeRoute
+                  blogs={sortedBlogs}
+                  createBlogMutation={createBlogMutation}
+                />
               }
             />
             <Route

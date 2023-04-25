@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Button, Paper, Anchor } from "@mantine/core";
+import { TextInput, Button, Paper, Anchor, Stack } from "@mantine/core";
 
 const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
   const [comment, setComment] = useState("");
@@ -50,14 +50,16 @@ const Blog = ({ blog, likeBlog, deleteBlog, commentBlog, currentUsername }) => {
         />
         <Button type="submit">add comment</Button>
       </form>
-      {blog.comments
-        .slice()
-        .reverse()
-        .map((c) => (
-          <Paper key={c.id} shadow="xs" p="md" my="md" withBorder>
-            {c.content}
-          </Paper>
-        ))}
+      <Stack>
+        {blog.comments
+          .slice()
+          .reverse()
+          .map((c) => (
+            <Paper key={c.id} shadow="xs" p="md" withBorder>
+              {c.content}
+            </Paper>
+          ))}
+      </Stack>
     </div>
   );
 };
