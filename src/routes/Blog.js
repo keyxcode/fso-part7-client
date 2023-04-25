@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import PropTypes from "prop-types";
 import { TextInput, Button, Paper, Anchor, Stack } from "@mantine/core";
 import blogService from "../services/blogs";
 import UserContext from "../UserContext";

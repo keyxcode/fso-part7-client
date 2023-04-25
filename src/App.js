@@ -1,32 +1,22 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
-import {
-  MantineProvider,
-  AppShell,
-  Container,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Routes, Route, useMatch } from "react-router-dom";
+import { MantineProvider, AppShell, Container, Text } from "@mantine/core";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Navigation from "./components/Navigation";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import usersService from "./services/users";
-import NotiContext from "./NotiContext";
 import UserContext from "./UserContext";
+import NotiContext from "./NotiContext";
 import UserRoute from "./routes/User";
 import UsersRoute from "./routes/Users";
 import BlogRoute from "./routes/Blog";
 import HomeRoute from "./routes/Home";
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [noti, notiDispatch] = useContext(NotiContext);
   const [user, userDispatch] = useContext(UserContext);
+  const [noti, notiDispatch] = useContext(NotiContext);
 
   const queryClient = useQueryClient();
   const blogResult = useQuery("blogs", blogService.getAll);
@@ -34,7 +24,6 @@ const App = () => {
 
   const matchUser = useMatch("users/:id");
   const matchBlog = useMatch("blogs/:id");
-  const navigate = useNavigate();
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -101,28 +90,6 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const loggedUser = await loginService.login({ username, password });
-      window.localStorage.setItem("loggedBlogUser", JSON.stringify(loggedUser));
-
-      const msg = `welcome ${loggedUser.name}`;
-      notifyWith(msg);
-
-      navigate("/");
-      userDispatch({ type: "SET", payload: loggedUser });
-
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      console.log(exception);
-
-      const msg = "wrong user name or password";
-      notifyWith(msg, "ERROR");
-    }
-  };
-
   const handleLogout = () => {
     userDispatch({ type: "CLEAR" });
     window.localStorage.removeItem("loggedBlogUser");
@@ -152,13 +119,7 @@ const App = () => {
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Container>
           <Notification />
-          <LoginForm
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
+          <LoginForm notifyWith={notifyWith} />
         </Container>
       </MantineProvider>
     );
