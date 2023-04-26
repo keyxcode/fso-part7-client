@@ -1,4 +1,4 @@
-import { Container, Stack } from "@mantine/core";
+import { Container, ScrollArea } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import BlogForm from "../components/BlogForm";
 import Togglable from "../components/Togglable";
@@ -32,14 +32,14 @@ const Home = ({ blogs, notifyWith }) => {
       <Togglable buttonLabel="create new">
         <BlogForm createBlog={createBlog} />
       </Togglable>
-      <Stack>
+      <ScrollArea.Autosize mah={500} type="always">
         {blogs
           .slice()
           .reverse()
           .map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
-      </Stack>
+      </ScrollArea.Autosize>
     </Container>
   );
 };

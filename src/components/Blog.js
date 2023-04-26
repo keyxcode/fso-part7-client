@@ -7,7 +7,10 @@ const useStyles = createStyles((theme) => ({
     padding: theme.spacing.md,
 
     "&:hover": {
-      backgroundColor: theme.colors.gray[0],
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[8]
+          : theme.colors.gray[1],
     },
   },
 }));
@@ -22,6 +25,8 @@ const Blog = ({ blog }) => {
       withBorder
       shadow="xs"
       className={classes.blogPaper}
+      p="md"
+      my="sm"
     >
       <Text>
         {blog.title} - {blog.author}

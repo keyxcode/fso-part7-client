@@ -61,7 +61,11 @@ const App = () => {
 
   if (!user) {
     return (
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        theme={{ fontFamily: "fantasy" }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         <Container>
           <Notification />
           <LoginForm notifyWith={notifyWith} />
@@ -71,8 +75,29 @@ const App = () => {
   }
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <AppShell header={<Navigation notifyWith={notifyWith} />}>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      styles={(theme) => ({
+        main: {
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+        },
+      })}
+    >
+      <AppShell
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        })}
+        header={<Navigation notifyWith={notifyWith} />}
+      >
         <Container>
           <Notification />
           <Text
