@@ -1,20 +1,34 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Paper, Text } from "@mantine/core";
+import { Paper, Text, createStyles } from "@mantine/core";
 
-const Blog = ({ blog }) => (
-  <Paper
-    component={Link}
-    to={`/blogs/${blog.id}`}
-    shadow="xs"
-    p="md"
-    withBorder
-  >
-    <Text>
-      {blog.title} - {blog.author}
-    </Text>
-  </Paper>
-);
+const useStyles = createStyles((theme) => ({
+  blogPaper: {
+    padding: theme.spacing.md,
+
+    "&:hover": {
+      backgroundColor: theme.colors.gray[0],
+    },
+  },
+}));
+
+const Blog = ({ blog }) => {
+  const { classes } = useStyles();
+
+  return (
+    <Paper
+      component={Link}
+      to={`/blogs/${blog.id}`}
+      withBorder
+      shadow="xs"
+      className={classes.blogPaper}
+    >
+      <Text>
+        {blog.title} - {blog.author}
+      </Text>
+    </Paper>
+  );
+};
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,

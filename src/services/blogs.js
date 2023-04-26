@@ -46,6 +46,7 @@ const commentBlog = async ({ id, commentObject }) => {
   const config = {
     headers: { Authorization: token },
   };
+
   const response = await axios.post(
     `${baseUrl}/${id}/comments`,
     commentObject,

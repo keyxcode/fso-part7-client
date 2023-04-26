@@ -54,39 +54,33 @@ const Blog = ({ blog, notifyWith }) => {
     },
   });
 
-  const likeBlog = async (updatedBlog) => {
-    blogService.setToken(user.token);
-    updateBlogMutation.mutate(updatedBlog);
-  };
-
-  const deleteBlog = async (id) => {
-    blogService.setToken(user.token);
-    deleteBlogMutation.mutate(id);
-  };
-
-  const commentBlog = async (id, content) => {
-    blogService.setToken(user.token);
-    commentBlogMutation.mutate({ id, commentObject: { content } });
-  };
-
   const handleClickLike = () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
     };
-    likeBlog(updatedBlog);
+
+    blogService.setToken(user.token);
+    updateBlogMutation.mutate(updatedBlog);
   };
 
   const handleClickDelete = () => {
     // eslint-disable-next-line no-alert
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog.id);
+      blogService.setToken(user.token);
+      deleteBlogMutation.mutate(blog.id);
     }
   };
 
   const handleSubmitComment = (event) => {
     event.preventDefault();
-    commentBlog(blog.id, comment);
+
+    const { id } = blog;
+    const commentObject = { content: comment };
+
+    blogService.setToken(user.token);
+    commentBlogMutation.mutate({ id, commentObject });
+
     setComment("");
   };
 
