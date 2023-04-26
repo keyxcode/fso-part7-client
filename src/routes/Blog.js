@@ -6,6 +6,7 @@ import {
   Anchor,
   Container,
   ScrollArea,
+  Grid,
 } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -86,39 +87,49 @@ const Blog = ({ blog, notifyWith }) => {
 
   return (
     <Container>
-      <h1>{blog.title}</h1>
-      <h2>{blog.author}</h2>
-      <div>
-        <Anchor component="a" href={blog.url}>
-          {blog.url}
-        </Anchor>
-      </div>
-      <div>likes {blog.likes}</div>
-      <div>
-        <Button onClick={handleClickLike}>like</Button>
-      </div>
-      <div>added by {blog.user.name}</div>
-      <div>
-        {blog.user.username === user.username && (
-          <Button onClick={handleClickDelete} color="red">
-            delete
-          </Button>
-        )}
-      </div>
-      <h2>comments</h2>
+      <Paper withBorder p="md">
+        <h1>{blog.title}</h1>
+        <h2>{blog.author}</h2>
+        <div>
+          <Anchor component="a" href={blog.url}>
+            {blog.url}
+          </Anchor>
+        </div>
+        <div>likes {blog.likes}</div>
+        <div>
+          <Button onClick={handleClickLike}>like</Button>
+        </div>
+        <div>added by {blog.user.name}</div>
+        <div>
+          {blog.user.username === user.username && (
+            <Button onClick={handleClickDelete} color="red">
+              delete
+            </Button>
+          )}
+        </div>
+      </Paper>
       <form onSubmit={handleSubmitComment}>
-        <TextInput
-          value={comment}
-          onChange={(event) => setComment(event.target.value)}
-        />
-        <Button type="submit">add comment</Button>
+        <h2>Comments</h2>
+        <Grid justify="flex-end">
+          <Grid.Col sm={10}>
+            <TextInput
+              value={comment}
+              onChange={(event) => setComment(event.target.value)}
+            />
+          </Grid.Col>
+          <Grid.Col sm={2}>
+            <Button type="submit" fullWidth>
+              add comment
+            </Button>
+          </Grid.Col>
+        </Grid>
       </form>
-      <ScrollArea.Autosize mah={300} type="always">
+      <ScrollArea.Autosize mah={500} type="always">
         {blog.comments
           .slice()
           .reverse()
           .map((c) => (
-            <Paper key={c.id} shadow="xs" p="md" withBorder>
+            <Paper key={c.id} p="md" my="sm" withBorder>
               {c.content}
             </Paper>
           ))}
