@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "@mantine/core";
+import { Button, Box } from "@mantine/core";
 
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false);
@@ -13,17 +13,19 @@ const Togglable = (props) => {
   };
 
   return (
-    <div>
+    <Box mb="md">
       <div style={hideWhenVisible}>
-        <Button onClick={toggleVisibility}>{props.buttonLabel}</Button>
+        <Button variant="outline" fullWidth onClick={toggleVisibility}>
+          {props.buttonLabel}
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <Button onClick={toggleVisibility} color="red">
+        <Button fullWidth onClick={toggleVisibility} color="orange">
           cancel
         </Button>
       </div>
-    </div>
+    </Box>
   );
 };
 
