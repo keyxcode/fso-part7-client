@@ -88,7 +88,7 @@ const Blog = ({ blog, notifyWith }) => {
 
   return (
     <Container>
-      <Paper withBorder p="xl">
+      <Paper withBorder p="xl" mb="md">
         <Grid>
           <Grid.Col sm={6}>
             <Text fz="xl" fw={700}>
@@ -97,7 +97,11 @@ const Blog = ({ blog, notifyWith }) => {
             <Text fz="lg" fs="italic">
               {blog.author}
             </Text>
-            <Anchor component="a" href={blog.url}>
+            <Anchor
+              component="a"
+              href={blog.url}
+              sx={{ wordWrap: "break-word" }}
+            >
               {blog.url}
             </Anchor>
             <Text>added by {blog.user.name}</Text>
@@ -118,7 +122,9 @@ const Blog = ({ blog, notifyWith }) => {
         </Grid>
       </Paper>
       <form onSubmit={handleSubmitComment}>
-        <h2>Comments</h2>
+        <Text fz="xl" fw={700}>
+          Comments
+        </Text>
         <Grid justify="flex-end">
           <Grid.Col sm={10}>
             <TextInput

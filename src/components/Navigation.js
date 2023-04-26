@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { Header, Group, rem, Button, Anchor, Flex } from "@mantine/core";
+import { Header, Flex, Button, Anchor } from "@mantine/core";
 import { useContext } from "react";
 import UserContext from "../UserContext";
-
-const HEADER_HEIGHT = rem(60);
 
 const Navigation = ({ notifyWith }) => {
   const [user, userDispatch] = useContext(UserContext);
@@ -16,22 +14,22 @@ const Navigation = ({ notifyWith }) => {
   };
 
   return (
-    <Header height={HEADER_HEIGHT} p="md">
-      <Flex justify="space-between">
-        <Group spacing={20}>
+    <Header height={60} p="md">
+      <Flex justify="space-between" wrap="wrap">
+        <Flex gap="md">
           <Anchor component={Link} to={"/"}>
             blogs
           </Anchor>
           <Anchor component={Link} to={"/users"}>
             users
           </Anchor>
-        </Group>
-        <Group spacing={20}>
-          {user.name} logged in
+        </Flex>
+        <Flex gap="md">
+          {user.name}
           <Button onClick={handleLogout} color="red">
             logout
           </Button>
-        </Group>
+        </Flex>
       </Flex>
     </Header>
   );
