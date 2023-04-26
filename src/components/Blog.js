@@ -26,7 +26,6 @@ const Blog = ({ blog }) => {
       shadow="xs"
       className={classes.blogPaper}
       p="md"
-      my="sm"
     >
       <Text>
         {blog.title} - {blog.author}

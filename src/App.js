@@ -61,11 +61,7 @@ const App = () => {
 
   if (!user) {
     return (
-      <MantineProvider
-        theme={{ fontFamily: "fantasy" }}
-        withGlobalStyles
-        withNormalizeCSS
-      >
+      <MantineProvider withGlobalStyles withNormalizeCSS>
         <Container>
           <Notification />
           <LoginForm notifyWith={notifyWith} />
