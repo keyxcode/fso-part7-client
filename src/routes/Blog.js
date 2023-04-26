@@ -1,16 +1,58 @@
 import { useState } from "react";
-import { TextInput, Button, Paper, Anchor, Stack } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  Paper,
+  Anchor,
+  Container,
+  ScrollArea,
+} from "@mantine/core";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import blogService from "../services/blogs";
 import { useUserValue } from "../UserContext";
 
-const Blog = ({
-  blog,
-  updateBlogMutation,
-  deleteBlogMutation,
-  commentBlogMutation,
-}) => {
+const Blog = ({ blog, notifyWith }) => {
   const [comment, setComment] = useState("");
   const user = useUserValue();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const updateBlogMutation = useMutation(blogService.update, {
+    onSuccess: ({ title, author }) => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `liked blog ${title} by ${author}`;
+      notifyWith(msg);
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
+
+  const deleteBlogMutation = useMutation(blogService.deleteBlog, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `deletion success`;
+      notifyWith(msg);
+      navigate("/");
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
+
+  const commentBlogMutation = useMutation(blogService.commentBlog, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("blogs");
+      notifyWith("comment posted");
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
 
   const likeBlog = async (updatedBlog) => {
     blogService.setToken(user.token);
@@ -36,6 +78,7 @@ const Blog = ({
   };
 
   const handleClickDelete = () => {
+    // eslint-disable-next-line no-alert
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       deleteBlog(blog.id);
     }
@@ -48,8 +91,9 @@ const Blog = ({
   };
 
   return (
-    <div>
+    <Container>
       <h1>{blog.title}</h1>
+      <h2>{blog.author}</h2>
       <div>
         <Anchor component="a" href={blog.url}>
           {blog.url}
@@ -59,7 +103,7 @@ const Blog = ({
       <div>
         <Button onClick={handleClickLike}>like</Button>
       </div>
-      <div>added by {blog.user.username}</div>
+      <div>added by {blog.user.name}</div>
       <div>
         {blog.user.username === user.username && (
           <Button onClick={handleClickDelete} color="red">
@@ -75,7 +119,7 @@ const Blog = ({
         />
         <Button type="submit">add comment</Button>
       </form>
-      <Stack>
+      <ScrollArea.Autosize mah={300} type="always">
         {blog.comments
           .slice()
           .reverse()
@@ -84,8 +128,8 @@ const Blog = ({
               {c.content}
             </Paper>
           ))}
-      </Stack>
-    </div>
+      </ScrollArea.Autosize>
+    </Container>
   );
 };
 

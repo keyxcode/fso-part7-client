@@ -1,12 +1,26 @@
 import { Container, Stack } from "@mantine/core";
+import { useMutation, useQueryClient } from "react-query";
 import BlogForm from "../components/BlogForm";
 import Togglable from "../components/Togglable";
 import Blog from "../components/Blog";
 import { useUserValue } from "../UserContext";
 import blogService from "../services/blogs";
 
-const Home = ({ blogs, createBlogMutation }) => {
+const Home = ({ blogs, notifyWith }) => {
   const user = useUserValue();
+  const queryClient = useQueryClient();
+
+  const createBlogMutation = useMutation(blogService.create, {
+    onSuccess: ({ title, author }) => {
+      queryClient.invalidateQueries("blogs");
+      const msg = `a new blog ${title} by ${author} added`;
+      notifyWith(msg);
+    },
+    onError: ({ message }) => {
+      const msg = `an error occured: ${message}`;
+      notifyWith(msg, "ERROR");
+    },
+  });
 
   const createBlog = async (newBlog) => {
     blogService.setToken(user.token);

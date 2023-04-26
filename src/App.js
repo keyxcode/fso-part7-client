@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { Routes, Route, useMatch } from "react-router-dom";
 import { MantineProvider, AppShell, Container, Text } from "@mantine/core";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -18,14 +18,11 @@ const App = () => {
   const [user, userDispatch] = useContext(UserContext);
   const notiDispatch = useNotiDispatch();
 
-  const queryClient = useQueryClient();
   const blogResult = useQuery("blogs", blogService.getAll);
   const usersResult = useQuery("users", usersService.getAll);
 
   const matchUser = useMatch("users/:id");
   const matchBlog = useMatch("blogs/:id");
-
-  const navigate = useNavigate();
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -34,54 +31,6 @@ const App = () => {
       notiDispatch({ type: "CLEAR" });
     }, 3000);
   };
-
-  const createBlogMutation = useMutation(blogService.create, {
-    onSuccess: ({ title, author }) => {
-      queryClient.invalidateQueries("blogs");
-      const msg = `a new blog ${title} by ${author} added`;
-      notifyWith(msg);
-    },
-    onError: ({ message }) => {
-      const msg = `an error occured: ${message}`;
-      notifyWith(msg, "ERROR");
-    },
-  });
-
-  const updateBlogMutation = useMutation(blogService.update, {
-    onSuccess: ({ title, author }) => {
-      queryClient.invalidateQueries("blogs");
-      const msg = `liked blog ${title} by ${author}`;
-      notifyWith(msg);
-    },
-    onError: ({ message }) => {
-      const msg = `an error occured: ${message}`;
-      notifyWith(msg, "ERROR");
-    },
-  });
-
-  const deleteBlogMutation = useMutation(blogService.deleteBlog, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("blogs");
-      const msg = `deletion success`;
-      notifyWith(msg);
-      navigate("/");
-    },
-    onError: ({ message }) => {
-      const msg = `an error occured: ${message}`;
-      notifyWith(msg, "ERROR");
-    },
-  });
-
-  const commentBlogMutation = useMutation(blogService.commentBlog, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("blogs");
-      notifyWith("comment posted");
-    },
-    onError: ({ message }) => {
-      const msg = `an error occured: ${message}`;
-      notifyWith(msg, "ERROR");
-    },
-  });
 
   useEffect(() => {
     const loggedBlogUser = window.localStorage.getItem("loggedBlogUser");
@@ -140,10 +89,7 @@ const App = () => {
             <Route
               path="/"
               element={
-                <HomeRoute
-                  blogs={sortedBlogs}
-                  createBlogMutation={createBlogMutation}
-                />
+                <HomeRoute blogs={sortedBlogs} notifyWith={notifyWith} />
               }
             />
             <Route
@@ -156,14 +102,7 @@ const App = () => {
             />
             <Route
               path="/blogs/:id"
-              element={
-                <BlogRoute
-                  blog={matchedBlog}
-                  updateBlogMutation={updateBlogMutation}
-                  deleteBlogMutation={deleteBlogMutation}
-                  commentBlogMutation={commentBlogMutation}
-                />
-              }
+              element={<BlogRoute blog={matchedBlog} notifyWith={notifyWith} />}
             />
           </Routes>
         </Container>
