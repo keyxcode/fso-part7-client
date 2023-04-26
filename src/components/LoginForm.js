@@ -1,4 +1,4 @@
-import { TextInput, Button, Text, Container, Flex } from "@mantine/core";
+import { TextInput, Button, Title, Container, Flex } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/login";
@@ -42,9 +42,7 @@ const LoginForm = ({ notifyWith }) => {
   return (
     <Container mt="md">
       <form onSubmit={handleLogin}>
-        <Text fz="xl" fw={700}>
-          log in to application
-        </Text>
+        <Title>log in to application</Title>
         username
         <TextInput
           id="username"

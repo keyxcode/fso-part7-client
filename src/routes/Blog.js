@@ -8,6 +8,8 @@ import {
   ScrollArea,
   Grid,
   Text,
+  Title,
+  Flex,
 } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -91,12 +93,10 @@ const Blog = ({ blog, notifyWith }) => {
       <Paper withBorder p="xl" mb="md">
         <Grid>
           <Grid.Col sm={6}>
-            <Text fz="xl" fw={700}>
+            <Title order={1} size="h3">
               {blog.title}
-            </Text>
-            <Text fz="lg" fs="italic">
-              {blog.author}
-            </Text>
+            </Title>
+            <Text fz="lg">{blog.author}</Text>
             <Anchor
               component="a"
               href={blog.url}
@@ -104,7 +104,7 @@ const Blog = ({ blog, notifyWith }) => {
             >
               {blog.url}
             </Anchor>
-            <Text>added by {blog.user.name}</Text>
+            <Text fs="italic">added by {blog.user.name}</Text>
           </Grid.Col>
           <Grid.Col sm={6}>
             <Button onClick={handleClickLike} mb="md">
@@ -126,29 +126,37 @@ const Blog = ({ blog, notifyWith }) => {
           Comments
         </Text>
         <Grid justify="flex-end">
-          <Grid.Col sm={10}>
+          <Grid.Col sm={9}>
             <TextInput
               value={comment}
               onChange={(event) => setComment(event.target.value)}
             />
           </Grid.Col>
-          <Grid.Col sm={2}>
+          <Grid.Col sm={3}>
             <Button type="submit" fullWidth>
               add comment
             </Button>
           </Grid.Col>
         </Grid>
       </form>
-      <ScrollArea.Autosize mah={500} type="always">
-        {blog.comments
-          .slice()
-          .reverse()
-          .map((c) => (
-            <Paper key={c.id} p="sm" my="sm" withBorder>
-              {c.content}
-            </Paper>
-          ))}
-      </ScrollArea.Autosize>
+      <Flex
+        mt="md"
+        direction="column"
+        sx={{
+          height: "30vh",
+        }}
+      >
+        <ScrollArea sx={{ flex: 1 }} type="always">
+          {blog.comments
+            .slice()
+            .reverse()
+            .map((c) => (
+              <Paper key={c.id} p="xs" mb="xs" withBorder>
+                {c.content}
+              </Paper>
+            ))}
+        </ScrollArea>
+      </Flex>
     </Container>
   );
 };

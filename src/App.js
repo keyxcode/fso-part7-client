@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { useQuery } from "react-query";
 import { Routes, Route, useMatch } from "react-router-dom";
-import { MantineProvider, AppShell, Container, Text } from "@mantine/core";
+import { MantineProvider, AppShell, Container, Title } from "@mantine/core";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Navigation from "./components/Navigation";
@@ -96,15 +96,16 @@ const App = () => {
       >
         <Container>
           <Notification />
-          <Text
+          <Title
             variant="gradient"
             gradient={{ from: "indigo", to: "cyan", deg: 45 }}
             ta="center"
-            fz={50}
-            fw={700}
+            order={1}
+            size={50}
+            mb="md"
           >
             blog app
-          </Text>
+          </Title>
 
           <Routes>
             <Route

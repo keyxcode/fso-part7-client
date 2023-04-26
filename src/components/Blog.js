@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Paper, Text, createStyles } from "@mantine/core";
+import { Paper, Text, createStyles, Title } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   blogPaper: {
@@ -28,7 +28,10 @@ const Blog = ({ blog }) => {
       p="md"
     >
       <Text>
-        {blog.title} - {blog.author}
+        <Title order={1} size="h3">
+          {blog.title}
+        </Title>{" "}
+        {blog.author}
       </Text>
     </Paper>
   );
