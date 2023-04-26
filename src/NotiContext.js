@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useContext } from "react";
 
 const notiReducer = (state, action) => {
   switch (action.type) {
@@ -30,5 +30,9 @@ export const NotiContextProvider = (props) => {
     </NotiContext.Provider>
   );
 };
+
+export const useNotiValue = () => useContext(NotiContext)[0];
+
+export const useNotiDispatch = () => useContext(NotiContext)[1];
 
 export default NotiContext;
