@@ -7,6 +7,7 @@ import {
   Container,
   ScrollArea,
   Grid,
+  Text,
 } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -87,26 +88,34 @@ const Blog = ({ blog, notifyWith }) => {
 
   return (
     <Container>
-      <Paper withBorder p="md">
-        <h1>{blog.title}</h1>
-        <h2>{blog.author}</h2>
-        <div>
-          <Anchor component="a" href={blog.url}>
-            {blog.url}
-          </Anchor>
-        </div>
-        <div>
-          <Button onClick={handleClickLike}>like</Button> {blog.likes}
-        </div>
-        <div></div>
-        <div>added by {blog.user.name}</div>
-        <div>
-          {blog.user.username === user.username && (
-            <Button onClick={handleClickDelete} color="red">
-              delete
-            </Button>
-          )}
-        </div>
+      <Paper withBorder p="xl">
+        <Grid>
+          <Grid.Col sm={6}>
+            <Text fz="xl" fw={700}>
+              {blog.title}
+            </Text>
+            <Text fz="lg" fs="italic">
+              {blog.author}
+            </Text>
+            <Anchor component="a" href={blog.url}>
+              {blog.url}
+            </Anchor>
+            <Text>added by {blog.user.name}</Text>
+          </Grid.Col>
+          <Grid.Col sm={6}>
+            <Button onClick={handleClickLike} mb="md">
+              like
+            </Button>{" "}
+            {blog.likes}
+            <div>
+              {blog.user.username === user.username && (
+                <Button onClick={handleClickDelete} color="red">
+                  delete
+                </Button>
+              )}
+            </div>
+          </Grid.Col>
+        </Grid>
       </Paper>
       <form onSubmit={handleSubmitComment}>
         <h2>Comments</h2>
