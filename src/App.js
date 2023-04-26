@@ -8,7 +8,7 @@ import Navigation from "./components/Navigation";
 import blogService from "./services/blogs";
 import usersService from "./services/users";
 import UserContext from "./UserContext";
-import NotiContext from "./NotiContext";
+import { useNotiDispatch } from "./NotiContext";
 import UserRoute from "./routes/User";
 import UsersRoute from "./routes/Users";
 import BlogRoute from "./routes/Blog";
@@ -16,7 +16,7 @@ import HomeRoute from "./routes/Home";
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext);
-  const [noti, notiDispatch] = useContext(NotiContext);
+  const notiDispatch = useNotiDispatch();
 
   const queryClient = useQueryClient();
   const blogResult = useQuery("blogs", blogService.getAll);

@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { Alert } from "@mantine/core";
-import NotiContext from "../NotiContext";
+import { useNotiValue } from "../NotiContext";
 
 const Notification = () => {
-  const [noti, notiDispatch] = useContext(NotiContext);
+  const noti = useNotiValue();
   if (noti === null) return null;
 
   const { message, type } = noti;
