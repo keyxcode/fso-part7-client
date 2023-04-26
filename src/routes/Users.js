@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Header, Group, rem, Button, Anchor } from "@mantine/core";
+import { Anchor, Table } from "@mantine/core";
 
 const Users = ({ usersResult, users }) => {
   if (usersResult.isLoading) {
@@ -8,11 +8,12 @@ const Users = ({ usersResult, users }) => {
   if (usersResult.isError) {
     return <div>Error: {usersResult.error}</div>;
   }
+
   return (
-    <table>
+    <Table>
       <thead>
         <tr>
-          <th></th>
+          <th>user</th>
           <th>blogs created</th>
         </tr>
       </thead>
@@ -28,7 +29,7 @@ const Users = ({ usersResult, users }) => {
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 };
 

@@ -19,7 +19,7 @@ const Home = ({ blogs, createBlogMutation }) => {
       <Togglable buttonLabel="create new">
         <BlogForm createBlog={createBlog} />
       </Togglable>
-      <Stack spacing="sm">
+      <Stack>
         {blogs
           .slice()
           .reverse()
