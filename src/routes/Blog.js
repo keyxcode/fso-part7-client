@@ -144,7 +144,7 @@ const Blog = ({ blog, notifyWith }) => {
           .slice()
           .reverse()
           .map((c) => (
-            <Paper key={c.id} p="md" my="sm" withBorder>
+            <Paper key={c.id} p="sm" my="sm" withBorder>
               {c.content}
             </Paper>
           ))}

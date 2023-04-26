@@ -1,4 +1,4 @@
-import { TextInput, Button, Text, Container } from "@mantine/core";
+import { TextInput, Button, Text, Container, Flex } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/login";
@@ -34,6 +34,11 @@ const LoginForm = ({ notifyWith }) => {
     }
   };
 
+  const handleClickGuest = () => {
+    setUsername("guest");
+    setPassword("123");
+  };
+
   return (
     <Container mt="md">
       <form onSubmit={handleLogin}>
@@ -56,9 +61,20 @@ const LoginForm = ({ notifyWith }) => {
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
-        <Button id="login-button" type="submit" mt="md">
-          login
-        </Button>
+        <Flex gap="md">
+          <Button id="login-button" type="submit" mt="md">
+            login
+          </Button>
+          <Button
+            type="button"
+            mt="md"
+            color="green"
+            variant="outline"
+            onClick={handleClickGuest}
+          >
+            use guest credentials
+          </Button>
+        </Flex>
       </form>
     </Container>
   );
