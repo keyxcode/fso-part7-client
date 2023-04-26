@@ -9,7 +9,6 @@ const Blog = ({ blog }) => (
     shadow="xs"
     p="md"
     withBorder
-    highlightOnHover
   >
     <Text>
       {blog.title} - {blog.author}

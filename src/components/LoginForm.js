@@ -1,14 +1,14 @@
 import { TextInput, Button } from "@mantine/core";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/login";
-import UserContext from "../UserContext";
+import { useUserDispatch } from "../UserContext";
 
 const LoginForm = ({ notifyWith }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [user, userDispatch] = useContext(UserContext);
+  const userDispatch = useUserDispatch();
 
   const navigate = useNavigate();
 

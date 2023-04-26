@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { TextInput, Button, Paper, Anchor, Stack } from "@mantine/core";
 import blogService from "../services/blogs";
-import UserContext from "../UserContext";
+import { useUserValue } from "../UserContext";
 
 const Blog = ({
   blog,
@@ -10,7 +10,7 @@ const Blog = ({
   commentBlogMutation,
 }) => {
   const [comment, setComment] = useState("");
-  const [user, userDispatch] = useContext(UserContext);
+  const user = useUserValue();
 
   const likeBlog = async (updatedBlog) => {
     blogService.setToken(user.token);

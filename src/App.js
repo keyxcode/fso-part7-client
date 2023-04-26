@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { Routes, Route, useMatch } from "react-router-dom";
+import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
 import { MantineProvider, AppShell, Container, Text } from "@mantine/core";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -24,6 +24,8 @@ const App = () => {
 
   const matchUser = useMatch("users/:id");
   const matchBlog = useMatch("blogs/:id");
+
+  const navigate = useNavigate();
 
   const notifyWith = (message, type = "SUCCESS") => {
     notiDispatch({ type, payload: message });
@@ -62,6 +64,7 @@ const App = () => {
       queryClient.invalidateQueries("blogs");
       const msg = `deletion success`;
       notifyWith(msg);
+      navigate("/");
     },
     onError: ({ message }) => {
       const msg = `an error occured: ${message}`;
