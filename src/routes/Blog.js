@@ -95,10 +95,10 @@ const Blog = ({ blog, notifyWith }) => {
             {blog.url}
           </Anchor>
         </div>
-        <div>likes {blog.likes}</div>
         <div>
-          <Button onClick={handleClickLike}>like</Button>
+          <Button onClick={handleClickLike}>like</Button> {blog.likes}
         </div>
+        <div></div>
         <div>added by {blog.user.name}</div>
         <div>
           {blog.user.username === user.username && (

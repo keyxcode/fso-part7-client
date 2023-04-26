@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Header, Group, rem, Button, Anchor } from "@mantine/core";
+import { Header, Group, rem, Button, Anchor, Flex } from "@mantine/core";
 import { useContext } from "react";
 import UserContext from "../UserContext";
 
@@ -16,17 +16,23 @@ const Navigation = ({ notifyWith }) => {
   };
 
   return (
-    <Header height={HEADER_HEIGHT}>
-      <Group spacing={20}>
-        <Anchor component={Link} to={"/"}>
-          blogs
-        </Anchor>
-        <Anchor component={Link} to={"/users"}>
-          users
-        </Anchor>
-        {user.name} logged in
-        <Button onClick={handleLogout}>logout</Button>
-      </Group>
+    <Header height={HEADER_HEIGHT} p="md">
+      <Flex justify="space-between">
+        <Group spacing={20}>
+          <Anchor component={Link} to={"/"}>
+            blogs
+          </Anchor>
+          <Anchor component={Link} to={"/users"}>
+            users
+          </Anchor>
+        </Group>
+        <Group spacing={20}>
+          {user.name} logged in
+          <Button onClick={handleLogout} color="red">
+            logout
+          </Button>
+        </Group>
+      </Flex>
     </Header>
   );
 };
