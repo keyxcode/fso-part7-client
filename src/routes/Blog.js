@@ -1,22 +1,11 @@
-import { useState } from "react";
-import {
-  TextInput,
-  Button,
-  Paper,
-  Anchor,
-  ScrollArea,
-  Grid,
-  Text,
-  Title,
-  Flex,
-} from "@mantine/core";
+import { Button, Paper, Anchor, Grid, Text, Title, Flex } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import blogService from "../services/blogs";
 import { useUserValue } from "../UserContext";
+import CommentSection from "../components/CommentSection";
 
 const Blog = ({ blog, notifyWith }) => {
-  const [comment, setComment] = useState("");
   const user = useUserValue();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -46,17 +35,6 @@ const Blog = ({ blog, notifyWith }) => {
     },
   });
 
-  const commentBlogMutation = useMutation(blogService.commentBlog, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("blogs");
-      notifyWith("comment posted");
-    },
-    onError: ({ message }) => {
-      const msg = `an error occured: ${message}`;
-      notifyWith(msg, "ERROR");
-    },
-  });
-
   const handleClickLike = () => {
     const updatedBlog = {
       ...blog,
@@ -73,18 +51,6 @@ const Blog = ({ blog, notifyWith }) => {
       blogService.setToken(user.token);
       deleteBlogMutation.mutate(blog.id);
     }
-  };
-
-  const handleSubmitComment = (event) => {
-    event.preventDefault();
-
-    const { id } = blog;
-    const commentObject = { content: comment };
-
-    blogService.setToken(user.token);
-    commentBlogMutation.mutate({ id, commentObject });
-
-    setComment("");
   };
 
   return (
@@ -120,37 +86,7 @@ const Blog = ({ blog, notifyWith }) => {
           </Grid.Col>
         </Grid>
       </Paper>
-      <form onSubmit={handleSubmitComment}>
-        <Text fz="xl" fw={700}>
-          Comments
-        </Text>
-        <Grid justify="flex-end">
-          <Grid.Col sm={9}>
-            <TextInput
-              value={comment}
-              onChange={(event) => setComment(event.target.value)}
-            />
-          </Grid.Col>
-          <Grid.Col sm={3}>
-            <Button type="submit" fullWidth>
-              add comment
-            </Button>
-          </Grid.Col>
-        </Grid>
-      </form>
-
-      {!blog.comments.length && <Text>There are no comments here</Text>}
-
-      <ScrollArea sx={{ flexGrow: 1 }} mt="xs" type="always">
-        {blog.comments
-          .slice()
-          .reverse()
-          .map((c) => (
-            <Paper key={c.id} p="xs" mb="xs" withBorder>
-              {c.content}
-            </Paper>
-          ))}
-      </ScrollArea>
+      <CommentSection blog={blog} notifyWith={notifyWith} />
     </Flex>
   );
 };
