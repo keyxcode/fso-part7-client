@@ -4,7 +4,6 @@ import {
   Button,
   Paper,
   Anchor,
-  Container,
   ScrollArea,
   Grid,
   Text,
@@ -89,7 +88,7 @@ const Blog = ({ blog, notifyWith }) => {
   };
 
   return (
-    <Container>
+    <Flex direction="column" sx={{ height: "100%" }}>
       <Paper withBorder p="xl" mb="md">
         <Grid>
           <Grid.Col sm={6}>
@@ -139,25 +138,18 @@ const Blog = ({ blog, notifyWith }) => {
           </Grid.Col>
         </Grid>
       </form>
-      <Flex
-        mt="md"
-        direction="column"
-        sx={{
-          height: "30vh",
-        }}
-      >
-        <ScrollArea sx={{ flex: 1 }} type="always">
-          {blog.comments
-            .slice()
-            .reverse()
-            .map((c) => (
-              <Paper key={c.id} p="xs" mb="xs" withBorder>
-                {c.content}
-              </Paper>
-            ))}
-        </ScrollArea>
-      </Flex>
-    </Container>
+
+      <ScrollArea sx={{ flexGrow: 1 }} mt="xs" type="always">
+        {blog.comments
+          .slice()
+          .reverse()
+          .map((c) => (
+            <Paper key={c.id} p="xs" mb="xs" withBorder>
+              {c.content}
+            </Paper>
+          ))}
+      </ScrollArea>
+    </Flex>
   );
 };
 

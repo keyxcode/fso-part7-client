@@ -106,27 +106,30 @@ const App = () => {
           >
             blog app
           </Title>
-
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <HomeRoute blogs={sortedBlogs} notifyWith={notifyWith} />
-              }
-            />
-            <Route
-              path="/users"
-              element={<UsersRoute users={users} usersResult={usersResult} />}
-            />
-            <Route
-              path="/users/:id"
-              element={<UserRoute user={matchedUser} />}
-            />
-            <Route
-              path="/blogs/:id"
-              element={<BlogRoute blog={matchedBlog} notifyWith={notifyWith} />}
-            />
-          </Routes>
+          <Container sx={{ height: "calc(100vh - 173px)" }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HomeRoute blogs={sortedBlogs} notifyWith={notifyWith} />
+                }
+              />
+              <Route
+                path="/users"
+                element={<UsersRoute users={users} usersResult={usersResult} />}
+              />
+              <Route
+                path="/users/:id"
+                element={<UserRoute user={matchedUser} />}
+              />
+              <Route
+                path="/blogs/:id"
+                element={
+                  <BlogRoute blog={matchedBlog} notifyWith={notifyWith} />
+                }
+              />
+            </Routes>
+          </Container>
         </Container>
       </AppShell>
     </MantineProvider>

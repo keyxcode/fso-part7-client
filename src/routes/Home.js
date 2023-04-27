@@ -1,4 +1,4 @@
-import { Container, ScrollArea, Stack, Flex, Tabs } from "@mantine/core";
+import { ScrollArea, Stack, Flex } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import BlogForm from "../components/BlogForm";
@@ -13,7 +13,7 @@ const Home = ({ blogs, notifyWith }) => {
   const navigate = useNavigate();
 
   const createBlogMutation = useMutation(blogService.create, {
-    onSuccess: ({ title, author, id }) => {
+    onSuccess: ({ title, author }) => {
       queryClient.invalidateQueries("blogs");
       const msg = `a new blog ${title} by ${author} added`;
       notifyWith(msg);
@@ -31,29 +31,22 @@ const Home = ({ blogs, notifyWith }) => {
   };
 
   return (
-    <Container>
+    <Flex direction="column" sx={{ height: "100%" }}>
       <Togglable buttonLabel="create new">
         <BlogForm createBlog={createBlog} />
       </Togglable>
 
-      <Flex
-        direction="column"
-        sx={{
-          height: "70vh",
-        }}
-      >
-        <ScrollArea sx={{ flex: 1 }} type="always">
-          <Stack>
-            {blogs
-              .slice()
-              .reverse()
-              .map((blog) => (
-                <Blog key={blog.id} blog={blog} />
-              ))}
-          </Stack>
-        </ScrollArea>
-      </Flex>
-    </Container>
+      <ScrollArea sx={{ flexGrow: 1 }} type="always">
+        <Stack>
+          {blogs
+            .slice()
+            .reverse()
+            .map((blog) => (
+              <Blog key={blog.id} blog={blog} />
+            ))}
+        </Stack>
+      </ScrollArea>
+    </Flex>
   );
 };
 
