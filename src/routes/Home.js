@@ -1,4 +1,4 @@
-import { ScrollArea, Stack, Flex } from "@mantine/core";
+import { ScrollArea, Stack, Flex, Box } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import BlogForm from "../components/BlogForm";
@@ -31,22 +31,24 @@ const Home = ({ blogs, notifyWith }) => {
   };
 
   return (
-    <Flex direction="column" sx={{ height: "100%" }}>
-      <Togglable buttonLabel="create new">
-        <BlogForm createBlog={createBlog} />
-      </Togglable>
+    <Box sx={{ height: "calc(100vh - 173px)" }}>
+      <Flex direction="column" sx={{ height: "100%" }}>
+        <Togglable buttonLabel="create new">
+          <BlogForm createBlog={createBlog} />
+        </Togglable>
 
-      <ScrollArea sx={{ flexGrow: 1 }} type="always">
-        <Stack>
-          {blogs
-            .slice()
-            .reverse()
-            .map((blog) => (
-              <Blog key={blog.id} blog={blog} />
-            ))}
-        </Stack>
-      </ScrollArea>
-    </Flex>
+        <ScrollArea sx={{ flexGrow: 1 }} type="always">
+          <Stack>
+            {blogs
+              .slice()
+              .reverse()
+              .map((blog) => (
+                <Blog key={blog.id} blog={blog} />
+              ))}
+          </Stack>
+        </ScrollArea>
+      </Flex>
+    </Box>
   );
 };
 

@@ -71,18 +71,7 @@ const App = () => {
   }
 
   return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
+    <MantineProvider withGlobalStyles withNormalizeCSS>
       <AppShell
         styles={(theme) => ({
           main: {
@@ -106,7 +95,7 @@ const App = () => {
           >
             blog app
           </Title>
-          <Container sx={{ height: "calc(100vh - 173px)" }}>
+          <Container>
             <Routes>
               <Route
                 path="/"
