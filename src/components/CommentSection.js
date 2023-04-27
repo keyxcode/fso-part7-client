@@ -63,7 +63,7 @@ const CommentSection = ({ blog, notifyWith }) => {
 
       {!blog.comments.length && <Text>There are no comments here</Text>}
 
-      <ScrollArea.Autosize mah={200} mt="xs" type="always">
+      <ScrollArea.Autosize mah={200} mt="md" type="always">
         {blog.comments
           .slice()
           .reverse()
