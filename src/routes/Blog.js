@@ -139,6 +139,8 @@ const Blog = ({ blog, notifyWith }) => {
         </Grid>
       </form>
 
+      {!blog.comments.length && <Text>There are no comments here</Text>}
+
       <ScrollArea sx={{ flexGrow: 1 }} mt="xs" type="always">
         {blog.comments
           .slice()
