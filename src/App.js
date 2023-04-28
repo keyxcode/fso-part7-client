@@ -14,7 +14,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notiInfo, setNotiInfo] = useState({ message: null });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,17 +29,6 @@ const App = () => {
       blogService.setToken(u.token);
     }
   }, []);
-
-  const notifyWith = (message, type = "info") => {
-    setNotiInfo({
-      message,
-      type,
-    });
-
-    setTimeout(() => {
-      setNotiInfo({ message: null });
-    }, 3000);
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -67,7 +55,7 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogUser");
 
     const msg = "logout success";
-    notifyWith(msg);
+    dispatch(setNotification(msg));
   };
 
   const createBlog = async ({ title, author, url }) => {
@@ -76,12 +64,12 @@ const App = () => {
       const newBlog = await blogService.create({ title, author, url });
 
       const msg = `a new blog ${title} by ${author} added`;
-      notifyWith(msg);
+      dispatch(setNotification(msg));
 
       setBlogs(blogs.concat(newBlog));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      dispatch(setNotification(msg, "ERROR"));
     }
   };
 
@@ -96,10 +84,10 @@ const App = () => {
       setBlogs(updatedBlogs);
 
       const msg = `liked blog ${updatedBlog.title} by ${updatedBlog.author}`;
-      notifyWith(msg);
+      dispatch(setNotification(msg));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      dispatch(setNotification(msg, "ERROR"));
     }
   };
 
@@ -111,10 +99,10 @@ const App = () => {
       setBlogs(blogs.filter((blog) => blog.id !== id));
 
       const msg = `deletion success`;
-      notifyWith(msg);
+      dispatch(setNotification(msg));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
-      notifyWith(msg, "error");
+      dispatch(setNotification(msg, "ERROR"));
     }
   };
 
@@ -122,7 +110,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification notiInfo={notiInfo} />
+      <Notification />
       {user && (
         <div>
           <h2>blogs</h2>
