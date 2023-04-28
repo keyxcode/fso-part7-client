@@ -58,7 +58,7 @@ const App = () => {
       console.log(exception);
 
       const msg = "wrong user name or password";
-      dispatch(setNotification(msg));
+      dispatch(setNotification(msg, "ERROR"));
     }
   };
 
