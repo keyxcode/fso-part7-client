@@ -9,7 +9,7 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { setNotification } from "./reducers/notiReducer";
-import { appendBlogs, setBlogs } from "./reducers/blogReducer";
+import { appendBlogs, setBlogs, like } from "./reducers/blogReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -77,18 +77,15 @@ const App = () => {
     }
   };
 
-  const likeBlog = async (id, updatedBlog) => {
+  const likeBlog = async (updatedBlog) => {
     try {
       blogService.setToken(user.token);
-      await blogService.update(id, updatedBlog);
-
-      const updatedBlogs = allBlogs.map((blog) =>
-        blog.id === id ? { ...blog, likes: updatedBlog.likes } : blog
-      );
-      // setBlogs(updatedBlogs);
+      await blogService.update(updatedBlog.id, updatedBlog);
 
       const msg = `liked blog ${updatedBlog.title} by ${updatedBlog.author}`;
       dispatch(setNotification(msg));
+
+      dispatch(like(updatedBlog));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
       dispatch(setNotification(msg, "ERROR"));

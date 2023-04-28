@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import blogService from "../services/blogs";
 
 const blogSlice = createSlice({
   name: "blogs",
@@ -8,11 +7,11 @@ const blogSlice = createSlice({
     appendBlogs(state, action) {
       state.push(action.payload);
     },
-    vote(state, action) {
+    like(state, action) {
       const updatedBlog = action.payload;
 
-      return state.map((anecdote) =>
-        anecdote.id !== updatedBlog.id ? anecdote : updatedBlog
+      return state.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
       );
     },
     setBlogs(state, action) {
@@ -21,25 +20,6 @@ const blogSlice = createSlice({
   },
 });
 
-export const { appendBlogs, vote, setBlogs } = blogSlice.actions;
-
-export const initializeBlogs = () => async (dispatch) => {
-  const anecdotes = await blogService.getAll();
-  dispatch(setBlogs(anecdotes));
-};
-
-export const createBlog = (content) => async (dispatch) => {
-  const newAnecdote = await blogService.createNew(content);
-  dispatch(appendBlogs(newAnecdote));
-};
-
-export const voteBlog = (anecdote) => async (dispatch) => {
-  const votedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
-  const updatedAnecdote = await blogService.update(
-    votedAnecdote.id,
-    votedAnecdote
-  );
-  dispatch(vote(updatedAnecdote));
-};
+export const { appendBlogs, like, setBlogs } = blogSlice.actions;
 
 export default blogSlice.reducer;
