@@ -9,7 +9,7 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { setNotification } from "./reducers/notiReducer";
-import { setBlogs } from "./reducers/blogReducer";
+import { appendBlogs, setBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -70,7 +70,7 @@ const App = () => {
       const msg = `a new blog ${title} by ${author} added`;
       dispatch(setNotification(msg));
 
-      // setBlogs(blogs.concat(newBlog));
+      dispatch(appendBlogs(newBlog));
     } catch (exception) {
       const msg = `an error occured: ${exception.message}`;
       dispatch(setNotification(msg, "ERROR"));
