@@ -10,11 +10,13 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { setNotification } from "./reducers/notiReducer";
 import { appendBlogs, setBlogs, like, remove } from "./reducers/blogReducer";
+import { clearUser, setUser } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+  const currentUser = useSelector(({ user }) => user);
   const allBlogs = useSelector(({ blogs }) =>
     blogs.slice().sort((blogA, blogB) => blogB.likes - blogA.likes)
   );
@@ -29,7 +31,7 @@ const App = () => {
 
     if (loggedBlogUser) {
       const u = JSON.parse(loggedBlogUser);
-      setUser(u);
+      dispatch(setUser(u));
       blogService.setToken(u.token);
     }
   }, []);
@@ -55,7 +57,7 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setUser(null);
+    dispatch(clearUser());
     window.localStorage.removeItem("loggedBlogUser");
 
     const msg = "logout success";
@@ -64,7 +66,7 @@ const App = () => {
 
   const createBlog = async ({ title, author, url }) => {
     try {
-      blogService.setToken(user.token);
+      blogService.setToken(currentUser.token);
       const newBlog = await blogService.create({ title, author, url });
 
       const msg = `a new blog ${title} by ${author} added`;
@@ -79,7 +81,7 @@ const App = () => {
 
   const likeBlog = async (updatedBlog) => {
     try {
-      blogService.setToken(user.token);
+      blogService.setToken(currentUser.token);
       await blogService.update(updatedBlog.id, updatedBlog);
 
       const msg = `liked blog ${updatedBlog.title} by ${updatedBlog.author}`;
@@ -94,7 +96,7 @@ const App = () => {
 
   const deleteBlog = async (id) => {
     try {
-      blogService.setToken(user.token);
+      blogService.setToken(currentUser.token);
       await blogService.deleteBlog(id);
 
       dispatch(remove(id));
@@ -110,11 +112,12 @@ const App = () => {
   return (
     <div>
       <Notification />
-      {user && (
+      {currentUser && (
         <div>
           <h2>blogs</h2>
           <div>
-            {user.name} logged in<button onClick={handleLogout}>logout</button>
+            {currentUser.name} logged in
+            <button onClick={handleLogout}>logout</button>
           </div>
           <Togglable buttonLabel="create new blog">
             <BlogForm createBlog={createBlog} />
@@ -125,12 +128,12 @@ const App = () => {
               blog={blog}
               likeBlog={likeBlog}
               deleteBlog={deleteBlog}
-              currentUsername={user.username}
+              currentUsername={currentUser.username}
             />
           ))}
         </div>
       )}
-      {!user && (
+      {!currentUser && (
         <LoginForm
           username={username}
           setUsername={setUsername}
