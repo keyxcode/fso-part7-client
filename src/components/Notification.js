@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 const Notification = () => {
   const { message, type } = useSelector(({ notification }) => notification);
-  console.log(message);
 
   const notiStyle = {
     color: "green",
