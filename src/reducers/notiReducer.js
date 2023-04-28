@@ -22,7 +22,7 @@ export const setNotification = (msg) => (dispatch) => {
   dispatch(notificationChange(msg));
   setTimeout(() => {
     dispatch(clearNotification());
-  }, 300);
+  }, 3000);
 };
 
 export default notificationSlice.reducer;

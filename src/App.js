@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
@@ -6,6 +7,7 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import { setNotification } from "./reducers/notiReducer";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +15,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [notiInfo, setNotiInfo] = useState({ message: null });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     blogService.getAll().then((b) => setBlogs(b));
@@ -46,7 +49,7 @@ const App = () => {
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(loggedUser));
 
       const msg = `welcome ${loggedUser.name}`;
-      notifyWith(msg);
+      dispatch(setNotification(msg));
 
       setUser(loggedUser);
       setUsername("");
@@ -55,7 +58,7 @@ const App = () => {
       console.log(exception);
 
       const msg = "wrong user name or password";
-      notifyWith(msg, "error");
+      dispatch(setNotification(msg));
     }
   };
 

@@ -7,7 +7,7 @@ import notiReducer from "./reducers/notiReducer";
 
 const store = configureStore({
   reducer: {
-    noti: notiReducer,
+    notification: notiReducer,
   },
 });
 
