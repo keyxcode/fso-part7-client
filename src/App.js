@@ -9,7 +9,7 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { setNotification } from "./reducers/notiReducer";
-import { appendBlogs, setBlogs, like } from "./reducers/blogReducer";
+import { appendBlogs, setBlogs, like, remove } from "./reducers/blogReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -97,7 +97,7 @@ const App = () => {
       blogService.setToken(user.token);
       await blogService.deleteBlog(id);
 
-      // setBlogs(blogs.filter((blog) => blog.id !== id));
+      dispatch(remove(id));
 
       const msg = `deletion success`;
       dispatch(setNotification(msg));

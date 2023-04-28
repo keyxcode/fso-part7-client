@@ -14,12 +14,17 @@ const blogSlice = createSlice({
         blog.id === updatedBlog.id ? updatedBlog : blog
       );
     },
+    remove(state, action) {
+      const id = action.payload;
+
+      return state.filter((blog) => blog.id !== id);
+    },
     setBlogs(state, action) {
       return action.payload;
     },
   },
 });
 
-export const { appendBlogs, like, setBlogs } = blogSlice.actions;
+export const { appendBlogs, like, remove, setBlogs } = blogSlice.actions;
 
 export default blogSlice.reducer;

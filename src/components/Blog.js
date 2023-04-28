@@ -28,6 +28,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, currentUsername }) => {
   };
 
   const handleClickDelete = () => {
+    // eslint-disable-next-line no-alert
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       deleteBlog(blog.id);
     }
