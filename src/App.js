@@ -93,7 +93,7 @@ const App = () => {
             size={50}
             mb="md"
           >
-            blog app
+            j&#39;aime
           </Title>
           <Container>
             <Routes>

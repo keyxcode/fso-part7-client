@@ -31,7 +31,7 @@ const Home = ({ blogs, notifyWith }) => {
   };
 
   return (
-    <Box sx={{ height: "calc(100vh - 173px)" }}>
+    <Box sx={{ height: "calc(100vh - 200px)" }}>
       <Flex direction="column" sx={{ height: "100%" }}>
         <Togglable buttonLabel="create new">
           <BlogForm createBlog={createBlog} />
